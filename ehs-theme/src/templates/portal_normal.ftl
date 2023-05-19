@@ -10,10 +10,14 @@
 	<meta content="initial-scale=1.0, width=device-width" name="viewport" />
 
 	<@liferay_util["include"] page=top_head_include />
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
-<body class="${css_class}">
+<body class="${css_class}" data-aos-duration="400" data-aos-easing="ease" data-aos-delay="0">
 
+<div class="preloader">
+    <img src="${images_folder}/theme/preloader.gif" alt="preloader">
+</div>
 <@liferay_ui["quick-access"] contentId="#main-content" />
 
 <@liferay_util["include"] page=body_top_include />
@@ -85,13 +89,13 @@
 									<div class="right-box" data-aos="fade-up" data-aos-duration="1200" data-aos-delay="900">
 										<ul class="right-menu">
 											<li>
-												<a href="#">
+												<a href="javascript:;">
 													<i class="fi-rr-globe"></i>
-													<span>عربي</span>
 												</a>
+												<@liferay.languages />
 											</li>
 											<li>
-												<a href="#">
+												<a href="javascript:;" data-toggle="modal" data-target="#exampleModal">
 													<i class="fi-rr-settings"></i>
 													<span>Settings</span>
 												</a>
@@ -103,10 +107,7 @@
 												</a>
 											</li>
 											<li>
-												<a href="#">
-													<i class="fi-rr-user"></i>
-													<span>Login</span>
-												</a>
+												<@liferay.user_personal_bar />
 											</li>
 										</ul>
 									</div>
@@ -160,7 +161,8 @@
 			</header>
 		</#if>
 
-		<section class="${portal_content_css_class} flex-fill" id="content">
+		<section class="${portal_content_css_class} flex-fill" id="content" data-aos="fade-up" data-aos-duration="1200" data-aos-delay="1200">
+			
 			<h2 class="sr-only">${htmlUtil.escape(the_title)}</h2>
 
 			<#if selectable>
@@ -363,10 +365,10 @@
 									<div class="website-info" data-aos="fade-up" data-aos-duration="600" data-aos-delay="700">
 										<p>Last updated on: 
 											<span>29/03/2023 08:45 AM</span> - This Site is Best viewed in 1280x1024 screen resolution. - Compatibility: 
-											<i class="fi-brands-firefox"></i> 10+, 
-											<i class="fi-brands-google"></i> 5+, 
-											<i class="fi-safari"></i> 1+, 
-											<i class="fi-opera"></i> 12+
+											<i class="fa fa-firefox" aria-hidden="true"></i> 10+, 
+											<i class="fa fa-chrome" aria-hidden="true"></i> 5+, 
+											<i class="fa fa-safari" aria-hidden="true"></i> 1+, 
+											<i class="fa fa-opera" aria-hidden="true"></i> 12+
 										</p>
 										<p class="copyright" data-aos="fade-up" data-aos-duration="500" data-aos-delay="200" data-aos-offset="-20">© 
 											<span>2023</span> EHS. All rights reserved.
@@ -394,8 +396,60 @@
 <@liferay_util["include"] page=body_bottom_include />
 
 <@liferay_util["include"] page=bottom_include />
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Settings</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<i class="fi-rr-circle-xmark"></i> 
+				</button>
+			</div>
+			<div class="modal-body">
+				<h3 class="mb-4 text-center">Accessibility Options</h3>
+				<div class="d-flex justify-content-center accessibilityBtn">
+					<button type="button" class="btn btn-outline-secondary">
+						<i class="fi-rr-eye"></i>
+					</button>
+					<button type="button" class="btn btn-outline-secondary"><i class="fi-rr-a"></i><i class="fi-rr-plus"></i></button>
+					<button type="button" class="btn btn-outline-secondary"><i class="fi-rr-a"></i><i class="fi-rr-minus"></i></button>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary">Save changes</button>
+			</div>
+		</div>
+	</div>
+</div>
 <script src="${javascript_folder}/aos.js"></script>
 <script src="${javascript_folder}/owl.carousel.js"></script>
+<script>
+	
+	$(document).ready(function() {	
+		console.log("inline ready");
+		setTimeout(() => {
+			$('.preloader').fadeOut(700);
+		}, "700");
+		
+		AOS.init({once: true});
+		$(".left-menu .dropdown-list").hover(function(){
+		  var megamenuWidth = $(".second-line").width();
+		  $(".megamenu").width(megamenuWidth);
+		});
+		
+		var owl = $('#alertSlider');
+		owl.owlCarousel({
+			items:1,
+			margin: 10,
+			nav: true,
+			loop: false,
+			autoplay:true,
+			autoplayTimeout:5000,
+			navText : ["<i class='fi-rr-arrow-circle-left'></i>","<i class='fi-rr-arrow-circle-right'></i>"]
+		})
+	})
+</script>
 </body>
 
 </html>
