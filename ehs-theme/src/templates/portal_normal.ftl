@@ -544,6 +544,7 @@
 		$('#themeSwitchCheck').prop('checked',false);
 		$(".colorBtn button").removeClass("active");
 		$("#darkButton").removeClass('active');
+		initTheme();
 	}
 </script>
 </body>
