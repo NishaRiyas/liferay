@@ -525,19 +525,25 @@
 	function fontChange(type){
 		console.log("aaa");
 		var currentSize = parseInt($('html').css('font-size'), 10);
-		
-		if(currentSize > 13 && currentSize < 18){
-			if(type == 'increase'){
+		if(type == 'increase'){
+			if(currentSize < 18){
 				$('html').css( "font-size", currentSize+1 );
-			}else{
+			}
+			
+		}else{
+			if(currentSize > 13){
 				$('html').css( "font-size", currentSize-1 );
 			}
+			
 		}
 	}
 	
 	function reset(){
 		localStorage.removeItem('themeSwitch');
 		$('html').css( "font-size", 16 );
+		$('#themeSwitchCheck').prop('checked',false);
+		$(".colorBtn button").removeClass("active");
+		$("#darkButton").removeClass('active');
 	}
 </script>
 </body>
