@@ -408,16 +408,27 @@
 			<div class="modal-body">
 				<h3 class="mb-4 text-center">Accessibility Options</h3>
 				<div class="d-flex justify-content-center accessibilityBtn">
-					<button type="button" class="btn btn-outline-secondary">
+					<button type="button" class="btn btn-outline-secondary" id="darkButton" onclick="themeSwitch('dark')">
 						<i class="fi-rr-eye"></i>
 					</button>
-					<button type="button" class="btn btn-outline-secondary"><i class="fi-rr-a"></i><i class="fi-rr-plus"></i></button>
-					<button type="button" class="btn btn-outline-secondary"><i class="fi-rr-a"></i><i class="fi-rr-minus"></i></button>
+					<button type="button" class="btn btn-outline-secondary" onclick="fontChange('increase')"><i class="fi-rr-a"></i><i class="fi-rr-plus"></i></button>
+					<button type="button" class="btn btn-outline-secondary" onclick="fontChange('decrease')"><i class="fi-rr-a"></i><i class="fi-rr-minus"></i></button>
+				</div>
+				<h3 class="my-4 text-center">Night Reading</h3>
+				<div class="switch">
+					<input class="switch__input" type="checkbox" id="themeSwitchCheck" onChange="themeSwitchCheckbox()">
+					<label aria-hidden="true" class="switch__label" for="themeSwitchCheck">On</label>
+					<div aria-hidden="true" class="switch__marker"></div>
+				</div>
+				<h3 class="my-4 text-center">Favorite Color</h3>
+				<div class="d-flex justify-content-center colorBtn">
+					<button class="btn color1" id="color1" onClick="themeSwitchclrBtn('color1')"></button>
+					<button class="btn color2" id="color2" onClick="themeSwitchclrBtn('color2')"></button>
+					<button class="btn color3" id="color3" onClick="themeSwitchclrBtn('color3')"></button>
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary">Save changes</button>
+				<button type="button" class="btn btn-primary" onclick="reset()">Reset settins</button>
 			</div>
 		</div>
 	</div>
@@ -425,7 +436,7 @@
 <script src="${javascript_folder}/aos.js"></script>
 <script src="${javascript_folder}/owl.carousel.js"></script>
 <script>
-	
+	initTheme();
 	$(document).ready(function() {	
 		console.log("inline ready");
 		setTimeout(() => {
@@ -447,8 +458,87 @@
 			autoplay:true,
 			autoplayTimeout:5000,
 			navText : ["<i class='fi-rr-arrow-circle-left'></i>","<i class='fi-rr-arrow-circle-right'></i>"]
-		})
-	})
+		});
+		
+		
+		
+		$("#close-btn").click(function () {
+			$('.alert-section').fadeOut(700);
+		});
+	});
+	
+	function initTheme() {
+		console.log("innit call");
+		var themeSelected = localStorage.getItem('themeSwitch');
+		if(themeSelected){
+			$('body').attr('data-theme',themeSelected);
+			if(themeSelected == 'dark'){
+				$("#darkButton").addClass('active');
+			}else if(themeSelected == 'night'){
+				$('#themeSwitchCheck').prop('checked',true);
+			}else if(themeSelected == 'color1'){
+				$("#color1").addClass('active');
+			}else if(themeSelected == 'color2'){
+				$("#color2").addClass('active');
+			}else if(themeSelected == 'color3'){
+				$("#color3").addClass('active');
+			}
+		}else{
+			$('body').attr('data-theme','default');
+			$("#darkButton").removeClass('active');
+			$('#themeSwitchCheck').prop('checked',false);
+		}
+	}
+	
+	function themeSwitch(themeType) {
+		console.log("switch call");
+		var themeSelected = localStorage.getItem('themeSwitch');
+		$('#themeSwitchCheck').prop('checked',false);
+		$(".colorBtn button").removeClass("active");
+		if(themeSelected == themeType){
+			localStorage.removeItem('themeSwitch');
+		}else{
+			localStorage.setItem('themeSwitch',themeType);
+		}
+		initTheme();
+	}
+	
+	function themeSwitchclrBtn(clr){
+		$(".colorBtn button").removeClass("active");
+		$("#"+clr).addClass('active');
+		localStorage.setItem('themeSwitch',clr);
+		initTheme();
+	}
+	
+	function themeSwitchCheckbox(){
+		var nightVision = $('#themeSwitchCheck').is(':checked');
+		$(".colorBtn button").removeClass("active");
+		$("#darkButton").removeClass("active");
+		if(nightVision){
+			localStorage.setItem('themeSwitch','night');
+		}else{
+			localStorage.removeItem('themeSwitch');
+		}
+		initTheme();
+	}
+	
+	function fontChange(type){
+		console.log("aaa");
+		var currentSize = parseInt($('html').css('font-size'), 10);
+		
+		if(currentSize > 13 && currentSize < 18){
+			if(type == 'increase'){
+				$('html').css( "font-size", currentSize+1 );
+			}else{
+				$('html').css( "font-size", currentSize-1 );
+			}
+		}
+	}
+	
+	function reset(){
+		localStorage.removeItem('themeSwitch');
+		$('html').css( "font-size", 16 );
+	}
 </script>
 </body>
 
